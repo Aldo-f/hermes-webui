@@ -1,0 +1,18 @@
+name: Sync Upstream
+on:
+  schedule:
+    - cron: '0 0 * * *' # Daily at midnight
+  workflow_dispatch: # Allow manual trigger
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Sync Upstream
+        uses: dabreadman/sync-upstream-repo@v1.3.0
+        with:
+          upstream_repo: nesquena/hermes-webui
+          upstream_branch: master
+          branch: master
+          token: ${{ secrets.GITHUB_TOKEN }}
