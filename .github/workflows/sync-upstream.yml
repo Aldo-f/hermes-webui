@@ -9,10 +9,16 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Sync Upstream
-        uses: dabreadman/sync-upstream-repo@v1.3.0
+      - name: Checkout Fork
+        uses: actions/checkout@v4
         with:
-          upstream_repo: nesquena/hermes-webui
-          upstream_branch: master
-          downstream_branch: master
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Sync Upstream
+        run: |
+          git remote add upstream https://github.com/nesquena/hermes-webui.git
+          git fetch upstream
+          git checkout master
+          git merge upstream/master
+          git push origin master
