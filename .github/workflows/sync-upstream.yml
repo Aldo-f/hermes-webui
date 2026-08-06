@@ -17,8 +17,15 @@ jobs:
 
       - name: Sync Upstream
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git remote add upstream https://github.com/nesquena/hermes-webui.git
           git fetch upstream
           git checkout master
-          git merge upstream/master
-          git push origin master
+          # Only merge if upstream has new commits
+          if git diff --quiet upstream/master --exit-data; then
+            echo "Already up to date with upstream"
+          else
+            git merge upstream/master --no-edit
+            git push origin master
+          fi
