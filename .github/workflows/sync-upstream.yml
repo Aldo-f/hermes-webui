@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      workflows: write
     steps:
       - name: Checkout Fork
         uses: actions/checkout@v4
@@ -23,7 +24,7 @@ jobs:
           git fetch upstream
           git checkout master
           # Only merge if upstream has new commits
-          if git diff --quiet upstream/master --exit-data; then
+          if git diff --quiet upstream/master --exit-code; then
             echo "Already up to date with upstream"
           else
             git merge upstream/master --no-edit
